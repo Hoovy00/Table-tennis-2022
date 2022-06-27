@@ -3,11 +3,11 @@ pygame.init()
 
 FRAMERATE=33
 TICK_DELAY=int(1000 / FRAMERATE)
-Black = 0,0,0
-Red = 255,255,255
-Red = 255,0,0
-Blue = 0,0,255
-Orange = 255,165,0
+COLOR_BLACK = 0,0,0
+COLOR_WHITE = 255,255,255
+COLOR_RED = 255,0,0
+COLOR_BLUE = 0,0,255
+COLOR_ORANGE = 255,165,0
 
 
 class Screen(object):
@@ -20,15 +20,15 @@ class TableTennis(object):
         # abstraction: table
         self.win = pygame.display.set_mode((Screen.WIDTH, Screen.HEIGHT))
         # abstraction: the instance of a Player, that we call player one
-        player_one = Player(facing = +1, initial_x= Screen.WIDTH/4, initial_y=Screen.HEIGHT/2, color=Red, keys=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s))
+        player_one = Player(facing = +1, initial_x= Screen.WIDTH/4, initial_y=Screen.HEIGHT/2, color=COLOR_RED, keys=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s))
         # abstraction: the instance of a Player, that we call player two
-        player_two = Player(facing = -1, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=Blue, keys=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN))
+        player_two = Player(facing = -1, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=COLOR_BLUE, keys=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN))
         # instance of Ball
-        self.ball = Ball(initial_x = Screen.WIDTH/2, initial_y = Screen.HEIGHT/2, color = Orange)
+        self.ball = Ball(initial_x = Screen.WIDTH/2, initial_y = Screen.HEIGHT/2, color = COLOR_ORANGE)
         #instance of player 1's goal
-        goal1 = Goal(initial_x = 0 - Ball.WIDTH, initial_y = 0, color = Black, facing = -1)
+        goal1 = Goal(initial_x = 0 - Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = -1)
         #instance of player 2's goal
-        goal2 = Goal(initial_x = Screen.WIDTH + Ball.WIDTH, initial_y = 0, color = Black, facing = +1)
+        goal2 = Goal(initial_x = Screen.WIDTH + Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = +1)
         # instance of wall
         wall1 = Wall(y = 0)
         #instance of wall
@@ -61,8 +61,8 @@ class TableTennis(object):
             # abstraction: draw entire scene 
 
             # abstraction: draw, clear screen after movement
-            self.win.fill(Black)
-            # colors screen black to remove movement after effect
+            self.win.fill(COLOR_BLACK)
+            # colors screen COLOR_BLACK to remove movement after effect
 
             for d in self.drawables:
                 d.draw(self.win)
@@ -77,7 +77,7 @@ class TableTennis(object):
 
 class Net(object):
     def draw(self, win):
-        pygame.draw.rect(win, (255,255,255), (Screen.WIDTH/2, 0, 10, Screen.HEIGHT))
+        pygame.draw.rect(win, (COLOR_WHITE), (Screen.WIDTH/2, 0, 10, Screen.HEIGHT))
 
 # the concept of a ball
 class Ball(object):
@@ -216,7 +216,7 @@ class Wall(object):
     
     def draw(self, win):
         """this draws the walls"""
-        pygame.draw.rect(win, (255,255,255), (0, self.y, Wall.LENGTH, Wall.WIDTH))
+        pygame.draw.rect(win, (COLOR_WHITE), (0, self.y, Wall.LENGTH, Wall.WIDTH))
 
     def collision(self, collidable):
         """this tells the ball what to do when it hits a wall"""

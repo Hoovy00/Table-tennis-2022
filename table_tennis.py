@@ -1,5 +1,4 @@
 import pygame
-pygame.init()
 
 FRAMERATE=33
 TICK_DELAY=int(1000 / FRAMERATE)
@@ -231,7 +230,10 @@ class Wall(object):
             if y  == self.y:
                 collidable.hit_wall()
                 return
+def main():
+    pygame.init()
+    game = TableTennis()
+    game.game_loop()
+    pygame.quit()
 
-game = TableTennis()
-game.game_loop()
-pygame.quit()
+main()

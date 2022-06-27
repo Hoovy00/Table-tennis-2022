@@ -36,11 +36,15 @@ class TableTennis(object):
         #instance of net
         net = Net()
         self.game_objects = [ player_one, player_two, self.ball, goal1, goal2, wall1, wall2, net ]
-        
-        self.input_receivers = [ game_object for game_object in self.game_objects if hasattr(game_object, "handle_input") ]
-        self.drawables = [ game_object for game_object in self.game_objects if hasattr(game_object, "draw") ]
-        self.tickables = [ game_object for game_object in self.game_objects if hasattr(game_object, "tick") ]
-        self.collidables = [ game_object for game_object in self.game_objects if hasattr(game_object, "collision")]
+
+        def get_game_objects_with_attribute(attribute_name):
+           return [ game_object for game_object in self.game_objects if hasattr(game_object, attribute_name) ]
+
+        self.input_receivers = get_game_objects_with_attribute("handle_input")
+        self.drawables = get_game_objects_with_attribute("draw")
+        self.tickables = get_game_objects_with_attribute("tick")
+        self.collidables = get_game_objects_with_attribute("collision")
+
     # abstraction: game loop
     def game_loop(self):
         run = True

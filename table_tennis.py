@@ -44,10 +44,10 @@ class TableTennis(object):
         self.drawables = get_game_objects_with_attribute("draw")
         self.tickables = get_game_objects_with_attribute("tick")
         self.collidables = get_game_objects_with_attribute("collision")
-        
+
     # abstraction: game loop
     def game_loop(self):
-        run = Trueconstant
+        run = True
         while run:
 
             # abstraction: tick rate

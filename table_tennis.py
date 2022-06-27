@@ -14,7 +14,6 @@ DIR_TOWARDS_LEFT = -1
 class Screen(object):
     WIDTH = 1080
     HEIGHT = 600
-    pygame.display.set_caption("Table tennis")
 
 class TableTennis(object):
     def __init__(self):
@@ -51,6 +50,8 @@ class TableTennis(object):
         run = True
         while run:
 
+            pygame.display.set_caption("Table tennis")
+
             # abstraction: tick rate
             pygame.time.delay(TICK_DELAY)
 
@@ -69,11 +70,11 @@ class TableTennis(object):
             self.win.fill(COLOR_BLACK)
             # colors screen COLOR_BLACK to remove movement after effect
 
-            for d in self.drawables:
-                d.draw(self.win)
-
             for t in self.tickables:
                 t.tick()
+
+            for d in self.drawables:
+                d.draw(self.win)
         
             for c in self.collidables:
                 c.collision(self.ball)

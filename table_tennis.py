@@ -22,9 +22,9 @@ class TableTennis(object):
         # abstraction: table
         self.win = pygame.display.set_mode((Screen.WIDTH, Screen.HEIGHT))
         # abstraction: the instance of a Player, that we call player one
-        player_one = Player(TOWARDS_RIGHT, initial_x= Screen.WIDTH/4, initial_y=Screen.HEIGHT/2, color=COLOR_RED, keys=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s))
+        player_one = Player(keys = PlayerControls.PLAYER1CONTROLS, facing = TOWARDS_RIGHT, initial_x = Screen.WIDTH/4, initial_y = Screen.HEIGHT/2 , color=COLOR_RED)
         # abstraction: the instance of a Player, that we call player two
-        player_two = Player(TOWARDS_LEFT, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=COLOR_BLUE, keys=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN))
+        player_two = Player(keys = PlayerControls.PLAYER2CONTROLS, facing = TOWARDS_LEFT, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=COLOR_BLUE)
         # instance of Ball
         self.ball = Ball(initial_x = Screen.WIDTH/2, initial_y = Screen.HEIGHT/2, color = COLOR_ORANGE)
         #instance of player 1's goal
@@ -157,6 +157,14 @@ class Ball(object):
         """all the corners are used in figuring out if the ball hit's anything"""
         return [self.ballpointA(), self.ballpointB(), self.ballpointC(), self.ballpointD()]
 
+class PlayerControls(object):
+    
+    PLAYER1CONTROLS=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s)
+    
+
+    PLAYER2CONTROLS=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN)
+    
+
 class Player(object):
     """handles everything to do with the player"""
     WIDTH = 50
@@ -169,6 +177,10 @@ class Player(object):
         self.color = color
         self.key_left, self.key_right, self.key_up, self.key_down = keys
         self.facing = facing
+
+    def draw(self, win):
+        """this draws the player"""
+        pygame.draw.rect(win, self.color, (self.x, self.y, Player.WIDTH, Player.HEIGHT))
 
     def handle_input(self, keys):
         """this handles player controls"""
@@ -183,10 +195,6 @@ class Player(object):
 
         if keys[self.key_down]:
             self.y += Player.SPEED
-
-    def draw(self, win):
-        """this draws the player"""
-        pygame.draw.rect(win, self.color, (self.x, self.y, Player.WIDTH, Player.HEIGHT))
 
     def collision(self,collidable):
         """this handles player and ball collisions"""

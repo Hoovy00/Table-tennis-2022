@@ -115,11 +115,21 @@ class Ball(object):
         """this tells the ball what to do when it hits a wall"""
         self.speed_y = self.speed_y * -1
 
-    def hit_paddle(self, facing):
-        """handles what happens when the ball hits a player"""
+    def hit_paddle_middle(self, facing):
+        """handles what happens when the ball hits a player in the middle"""
+        self.speed_x = facing * abs(self.speed_x * 1.05)
+        self.speed_y = 0
+
+    def hit_paddle_upper(self, facing):
+        """handles what happens when the ball hits the upper part of a player"""
         self.speed_x = facing * abs(self.speed_x)
-        if self.speed_y == 0:
-            self.speed_y = 10
+        self.speed_y = -10
+
+
+    def hit_paddle_lower(self, facing):
+        """handles what happens when the ball hits the lower part of a player"""
+        self.speed_x = facing * abs(self.speed_x)
+        self.speed_y = +10            
 
     def draw(self, win):
         """draws the ball"""
@@ -127,23 +137,19 @@ class Ball(object):
 
     def ballpointA(self):
         """upper left corner"""
-        point_A_location = (self.x, self.y)
-        return point_A_location
+        return (self.x, self.y)
 
     def ballpointB(self):
         """upper right corner"""
-        point_B_location = ((self.x + Ball.WIDTH), self.y)
-        return point_B_location
+        return ((self.x + Ball.WIDTH), self.y)
 
     def ballpointC(self):
         """lower right corner"""
-        point_C_location = ((self.x + Ball.WIDTH), (self.y + Ball.HEIGHT))
-        return point_C_location
+        return ((self.x + Ball.WIDTH), (self.y + Ball.HEIGHT))
 
     def ballpointD(self):
         """lower left corner"""
-        point_D_location = (self.x, (self.y + Ball.HEIGHT))
-        return point_D_location
+        return (self.x, (self.y + Ball.HEIGHT))
 
     def ball_reset(self,facing):
         """when this function is called it will reset the ball to it's start"""
@@ -170,6 +176,7 @@ class Player(object):
     WIDTH = 50
     HEIGHT = 50
     SPEED = 11
+    CORNER = 10
     def __init__(self, facing, initial_x, initial_y, color, keys):
         """this initialises the players"""
         self.x = initial_x
@@ -198,10 +205,19 @@ class Player(object):
 
     def collision(self,collidable):
         """this handles player and ball collisions"""
+        collided = None
         for x, y in collidable.get_collision_points():    
             if x >= self.x and x <= self.x + Player.WIDTH and y >= self.y and y <= self.y + Player.HEIGHT:
-                collidable.hit_paddle(self.facing)
-                return
+                collided = y
+                break
+        if collided is not None:
+            if y < self.y + Player.HEIGHT * 1/3:
+                collidable.hit_paddle_upper(self.facing)
+            elif y > self.y + Player.HEIGHT * 2/3:
+                collidable.hit_paddle_lower(self.facing)
+            else:
+                collidable.hit_paddle_middle(self.facing)
+
 
 class Goal(object):
     """the goal"""

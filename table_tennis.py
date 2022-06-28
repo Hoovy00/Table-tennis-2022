@@ -7,8 +7,8 @@ COLOR_WHITE = 255,255,255
 COLOR_RED = 255,0,0
 COLOR_BLUE = 0,0,255
 COLOR_ORANGE = 255,165,0
-DIR_TOWARDS_RIGHT = +1
-DIR_TOWARDS_LEFT = -1
+TOWARDS_RIGHT = +1
+TOWARDS_LEFT = -1
 
 
 class Screen(object):
@@ -20,15 +20,15 @@ class TableTennis(object):
         # abstraction: table
         self.win = pygame.display.set_mode((Screen.WIDTH, Screen.HEIGHT))
         # abstraction: the instance of a Player, that we call player one
-        player_one = Player(facing = +1, initial_x= Screen.WIDTH/4, initial_y=Screen.HEIGHT/2, color=COLOR_RED, keys=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s))
+        player_one = Player(TOWARDS_RIGHT, initial_x= Screen.WIDTH/4, initial_y=Screen.HEIGHT/2, color=COLOR_RED, keys=(pygame.K_a, pygame.K_d, pygame.K_w, pygame.K_s))
         # abstraction: the instance of a Player, that we call player two
-        player_two = Player(facing = -1, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=COLOR_BLUE, keys=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN))
+        player_two = Player(TOWARDS_LEFT, initial_x = (Screen.WIDTH/4) * 3, initial_y=Screen.HEIGHT/2, color=COLOR_BLUE, keys=(pygame.K_LEFT, pygame.K_RIGHT, pygame.K_UP, pygame.K_DOWN))
         # instance of Ball
         self.ball = Ball(initial_x = Screen.WIDTH/2, initial_y = Screen.HEIGHT/2, color = COLOR_ORANGE)
         #instance of player 1's goal
-        goal1 = Goal(initial_x = 0 - Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = -1)
+        goal1 = Goal(initial_x = 0 - Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = TOWARDS_RIGHT)
         #instance of player 2's goal
-        goal2 = Goal(initial_x = Screen.WIDTH + Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = +1)
+        goal2 = Goal(initial_x = Screen.WIDTH + Ball.WIDTH, initial_y = 0, color = COLOR_BLACK, facing = TOWARDS_LEFT)
         # instance of wall
         wall1 = Wall(y = 0)
         #instance of wall
@@ -99,24 +99,24 @@ class Ball(object):
         self.initial_x = initial_x
         self.initial_y = initial_y
         self.serve_direction = +1
-        Ball.SPEED_X = 10
-        Ball.SPEED_Y = 0
+        self.speed_x = Ball.SPEED_X
+        self.speed_y = Ball.SPEED_Y
         
     
     def tick(self):
         """this handles the movement"""
-        self.x += Ball.SPEED_X
-        self.y += Ball.SPEED_Y
+        self.x += self.speed_x
+        self.y += self.speed_y
 
     def hit_wall(self):
         """this tells the ball what to do when it hits a wall"""
-        Ball.SPEED_Y = Ball.SPEED_Y * -1
+        self.speed_y = self.speed_y * -1
 
     def hit_paddle(self, facing):
         """handles what happens when the ball hits a player"""
-        Ball.SPEED_X = facing * abs(Ball.SPEED_X)
-        if Ball.SPEED_Y == 0:
-            Ball.SPEED_Y = 10
+        self.speed_x = facing * abs(self.speed_x)
+        if self.speed_y == 0:
+            self.speed_y = 10
 
     def draw(self, win):
         """draws the ball"""
@@ -146,9 +146,9 @@ class Ball(object):
         """when this function is called it will reset the ball to it's start"""
         self.x = self.initial_x
         self.y = self.initial_y
-        Ball.SPEED_Y = 0
-        self.serve_direction = facing
-        Ball.SPEED_X = 10 * self.serve_direction
+        self.speed_y = 0
+        self.serve_direction = (facing * -1)
+        self.speed_x = 10 * self.serve_direction
 
     def get_collision_points(self):
         """all the corners are used in figuring out if the ball hit's anything"""

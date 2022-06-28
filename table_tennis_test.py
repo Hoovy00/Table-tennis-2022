@@ -115,11 +115,21 @@ class Ball(object):
         """this tells the ball what to do when it hits a wall"""
         self.speed_y = self.speed_y * -1
 
-    def hit_paddle(self, facing):
-        """handles what happens when the ball hits a player"""
+    def hit_paddle_middle(self, facing):
+        """handles what happens when the ball hits a player in the middle"""
         self.speed_x = facing * abs(self.speed_x)
-        if self.speed_y == 0:
-            self.speed_y = 10
+        self.speed_y = 0
+
+    def hit_paddle_upper(self, facing):
+        """handles what happens when the ball hits the upper part of a player"""
+        self.speed_x = facing * abs(self.speed_x)
+        self.speed_y = 10
+
+
+    def hit_paddle_lower(self, facing):
+        """handles what happens when the ball hits the lower part of a player"""
+        self.speed_x = facing * abs(self.speed_x)
+        self.speed_y = -10            
 
     def draw(self, win):
         """draws the ball"""
@@ -170,6 +180,7 @@ class Player(object):
     WIDTH = 50
     HEIGHT = 50
     SPEED = 11
+    CORNER = 10
     def __init__(self, facing, initial_x, initial_y, color, keys):
         """this initialises the players"""
         self.x = initial_x
@@ -200,7 +211,19 @@ class Player(object):
         """this handles player and ball collisions"""
         for x, y in collidable.get_collision_points():    
             if x >= self.x and x <= self.x + Player.WIDTH and y >= self.y and y <= self.y + Player.HEIGHT:
-                collidable.hit_paddle(self.facing)
+                collidable.hit_paddle_middle(self.facing)
+                return
+
+    def collision(self,collidable):
+        for x, y in collidable.get_collision_points():    
+            if x >= self.x and x <= self.x + Player.WIDTH and y >= self.y and y <= self.y + Player.CORNER:
+                collidable.hit_paddle_upper(self.facing)
+                return
+
+    def collision(self,collidable):
+        for x, y in collidable.get_collision_points():    
+            if x >= self.x and x <= self.x + Player.WIDTH and y >= self.y + (Player.HEIGHT - Player.CORNER) and y <= self.y + Player.HEIGHT:
+                collidable.hit_paddle_lower(self.facing)
                 return
 
 class Goal(object):

@@ -117,7 +117,7 @@ class Ball(object):
 
     def hit_paddle_middle(self, facing):
         """handles what happens when the ball hits a player in the middle"""
-        self.speed_x = facing * abs(self.speed_x * 1.1)
+        self.speed_x = facing * abs(self.speed_x * 1.05)
         self.speed_y = 0
 
     def hit_paddle_upper(self, facing):

@@ -51,37 +51,42 @@ class TableTennis(object):
     def game_loop(self):
         run = True
         while run:
+            
+            game_loop_tick(self)
 
             pygame.display.set_caption("Table tennis")
 
             # abstraction: tick rate
             pygame.time.delay(TICK_DELAY)
 
-            # abstraction: command, quit game
-            for event in pygame.event.get():
-                if event.type == pygame.QUIT:
-                    run = False
-
-            keys = pygame.key.get_pressed()
-            for i in self.input_receivers:
-                i.handle_input(keys)    
-
-            # abstraction: draw entire scene 
-
-            # abstraction: draw, clear screen after movement
-            self.win.fill(COLOR_BLACK)
-            # colors screen COLOR_BLACK to remove movement after effect
-
-            for t in self.tickables:
-                t.tick()
-
-            for d in self.drawables:
-                d.draw(self.win)
-        
-            for c in self.collidables:
-                c.collision(self.ball)
             # abstraction: update the actual display
             pygame.display.update() 
+        
+
+def game_loop_tick(self):
+        # abstraction: command, quit game
+        for event in pygame.event.get():
+            if event.type == pygame.QUIT:
+                run = False
+
+        keys = pygame.key.get_pressed()
+        for i in self.input_receivers:
+            i.handle_input(keys)    
+
+        # abstraction: draw entire scene 
+
+        # abstraction: draw, clear screen after movement
+        self.win.fill(COLOR_BLACK)
+        # colors screen COLOR_BLACK to remove movement after effect
+
+        for t in self.tickables:
+            t.tick()
+
+        for d in self.drawables:
+            d.draw(self.win)
+    
+        for c in self.collidables:
+            c.collision(self.ball)
 
 class Net(object):
     """this makes the net"""

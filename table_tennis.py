@@ -12,10 +12,12 @@ TOWARDS_LEFT = -1
 
 
 class Screen(object):
+    """creates the game window"""
     WIDTH = 1080
     HEIGHT = 600
 
 class TableTennis(object):
+    """this handles the main functions of the game world"""
     def __init__(self):
         # abstraction: table
         self.win = pygame.display.set_mode((Screen.WIDTH, Screen.HEIGHT))
@@ -82,11 +84,12 @@ class TableTennis(object):
             pygame.display.update() 
 
 class Net(object):
+    """this makes the net"""
     def draw(self, win):
         pygame.draw.rect(win, (COLOR_WHITE), (Screen.WIDTH/2, 0, 10, Screen.HEIGHT))
 
-# the concept of a ball
 class Ball(object):
+    """this handles the functions of the ball"""
     WIDTH = 30
     HEIGHT = 30
     SPEED_X = 10
@@ -154,8 +157,8 @@ class Ball(object):
         """all the corners are used in figuring out if the ball hit's anything"""
         return [self.ballpointA(), self.ballpointB(), self.ballpointC(), self.ballpointD()]
 
-# abstraction: the concept of a player
 class Player(object):
+    """handles everything to do with the player"""
     WIDTH = 50
     HEIGHT = 50
     SPEED = 11
@@ -192,8 +195,8 @@ class Player(object):
                 collidable.hit_paddle(self.facing)
                 return
 
-# a goal
 class Goal(object):
+    """the goal"""
     WIDTH = 10
     def __init__(self, initial_x, initial_y, color, facing):
         """this initialises the goal class"""
@@ -214,6 +217,7 @@ class Goal(object):
                 return
 
 class Wall(object):
+    """this makes the walls"""
     LENGTH = Screen.WIDTH
     WIDTH = 10
     """this initialises the walls"""
